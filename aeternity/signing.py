@@ -76,7 +76,8 @@ class KeyPair:
 
     @classmethod
     def from_public_private_key_strings(cls, public, private):
-        signing_key = SigningKey.from_string(private, curve=SECP256k1, hashfunc=sha256)
+        pk = bytes.fromhex(private)
+        signing_key = SigningKey.from_string(pk, curve=SECP256k1, hashfunc=sha256)
         return KeyPair(signing_key, signing_key.get_verifying_key())
 
     @classmethod

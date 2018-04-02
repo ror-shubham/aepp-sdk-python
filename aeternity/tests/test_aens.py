@@ -13,6 +13,8 @@ from aeternity.config import ConfigException
 from aeternity.formatter import pretty_block
 from aeternity.signing import KeyPair
 
+from . import KEY_PATH, KEY_PASSWORD
+
 try:
     # if there are no env vars set for the config, this call will fail
     Config()
@@ -22,7 +24,7 @@ except ConfigException:
     Config.set_defaults(Config(external_host=3013, internal_host=3113, websocket_host=3114))
 
 
-keypair = KeyPair.read_from_dir('/home/tom/data/aeternity/epoch/_build/dev1/rel/epoch/data/aecore/keys/', 'secret')
+keypair = KeyPair.read_from_dir(KEY_PATH, KEY_PASSWORD)
 
 def random_domain(length=10):
     rand_str = ''.join(random.choice(string.ascii_letters) for _ in range(length))

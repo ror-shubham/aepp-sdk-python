@@ -25,9 +25,15 @@ class KeyPair:
         self.verifying_key = verifying_key
 
     def get_address(self):
+        """returns the public key encoded in base58"""
         pub_key = self.verifying_key.to_string()
         return 'ak$' + base58.b58encode_check(b'\x04' + pub_key)
 
+    def get_privatekey(self):
+        """returns the private key encoded in base58"""
+        key = self.signing_key.to_string()
+        return base58.b58encode_check(b'\x04' + key)
+    
     def encode_transaction_message(self, unpacked_tx, signatures):
         if not isinstance(signatures, list):
             signatures = [signatures]

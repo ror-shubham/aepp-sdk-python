@@ -27,3 +27,18 @@ def test_create_transaction_signing():
     # find the transaction that is the spend transaction we just submitted
     spend_tx = next(tx for tx in all_transactions if type(tx.tx) == SpendTx)
     assert spend_tx.signatures[0] == b58signature
+
+def test_keypair_deterministic_name():
+    # generate key pair
+    kp1 = KeyPair.generate()
+
+    # load key from string 
+    kp2 = KeyPair.from_public_private_key_strings_base58(
+        kp1.get_address(), kp1.get_privatekey())
+    print(kp1.get_address())
+    print(kp2.get_address())
+    assert kp1.get_address() == kp2.get_address()
+    assert kp1.get_privatekey() == kp2.get_privatekey()
+    assert kp1.get_name() == kp2.get_name()
+
+

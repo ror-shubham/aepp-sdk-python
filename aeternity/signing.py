@@ -9,6 +9,8 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from ecdsa import SECP256k1, SigningKey, VerifyingKey
 import ecdsa
+import random
+import aeternity.gfycat.words as w
 
 
 class SignableTransaction:
@@ -33,7 +35,16 @@ class KeyPair:
         """returns the private key encoded in base58"""
         key = self.signing_key.to_string()
         return base58.b58encode_check(b'\x04' + key)
-    
+
+    def get_name(self):
+        """get deterministic name for the public key"""
+        seed_address = self.get_address()
+        random.seed(a=seed_address, version=2)
+        a1,a2 = random.sample(w.adjectives, 2)
+        random.seed(a=seed_address, version=2)
+        a3 = random.choice(w.animals)
+        return '{} {} {}'.format(a1, a2, a3)
+
     def encode_transaction_message(self, unpacked_tx, signatures):
         if not isinstance(signatures, list):
             signatures = [signatures]
